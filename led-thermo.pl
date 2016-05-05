@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use HiPi::Wiring;
 use Time::Local;
-use v5.20;
+use v5.10;
 
 #functions
 my $csv_file = "/var/loldata.csv";

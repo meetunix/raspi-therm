@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use diagnostics;
-use 5.20.2;
+use 5.10;
 use Time::Local;
 
 my $csv_file = "/tmp/loldata.csv";

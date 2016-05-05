@@ -3,7 +3,7 @@
 #use strict;
 use warnings;
 use HiPi::Wiring;
-use v5.20;
+use v5.10;
 
 say "$0 works only with root privileges";
 
