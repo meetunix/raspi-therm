@@ -22,7 +22,6 @@ sub f_get_epoc {
         return $epoch
 }
 
-
 sub f_get_loldht_data {
 	my $lol_output = `loldht 0`;
         if ( $lol_output =~ /=\s([-\.0-9]+).+=\s([-\.0-9]+)/) {
@@ -34,14 +33,12 @@ sub f_get_loldht_data {
         }
 }
 
-
 #initialize wiringpi and my pins
 &HiPi::Wiring::wiringPiSetup();
 my @led_pin = ( 1..5,12,13 );
 foreach my $pin (@led_pin) {
         &HiPi::Wiring::pinMode ($pin, 1);
 }
-
 
 #get data from dht22
 my $below_zero = 0;
