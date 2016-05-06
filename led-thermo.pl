@@ -5,6 +5,14 @@ use warnings;
 use HiPi::Wiring;
 use Time::Local;
 use v5.10;
+use DBD::Pg;
+
+###################
+my $dbname              = "wetterdb";
+my $dbuser              = "wetter";
+my $dbhost              = "192.168.42.72";
+my $dbpassword          = "password";
+###################
 
 #functions
 my $csv_file = "/var/loldata.csv";
@@ -32,6 +40,22 @@ sub f_get_loldht_data {
                 die 'lol_dht does not provide usefull data';
         }
 }
+#database functions
+#f_write_db (EPOCH, TEMP, HUMID)
+sub f_write_db {
+	#db-connect
+	my $dbh = DBI->connect("dbi:Pg:dbname=$dbname;host=$dbhost","$dbuser","$dbpassword" , {AutoCommit => 1}) or die $DBI::errstr;
+	my $curr_epoch = $_[0];
+        my $curr_temp = $_[1];
+        my $curr_humid = $_[2];
+	my @hr_time =  gmtime($curr_epoch); #all times in UTC
+        my $curr_time = sprintf("%04d-%02d-%02d %02d:%02d:%02d\n", $hr_time[5] + 1900, $hr_time[4]+1, $hr_time[3], $hr_time[2], $hr_time[1], $hr_time[0]);
+	#write dataset to db    
+	my $rv = $dbh->do("INSERT INTO wetterdaten (epoch,time,temp,humid) VALUES ('$curr_epoch','$curr_time','$curr_temp','$curr_humid');");
+	$dbh->disconnect;
+
+
+}
 
 #initialize wiringpi and my pins
 &HiPi::Wiring::wiringPiSetup();
@@ -55,11 +79,10 @@ if ( int($lol_data[1]) < 0 ) {
 	$lol_temp = abs(int($lol_data[1]));
 }
 
-say "lol_temp: $lol_temp";
 #convert temperatur in binary
 my $bin_temp = sprintf '%05b', $lol_temp;
 
-#re-check if data is good
+#re-check if data is good nothing happens this time
 if ( length $bin_temp > 5 ) {
 	say length $bin_temp;
 	say "temp is higher then 32 degree - therm can't schow this high temperature";
@@ -101,7 +124,8 @@ if ( $act_temp{'2_16'} != 0 ) {
 	&HiPi::Wiring::digitalWrite(1, 1); 
 }
 
+my $epoch_time = f_get_epoc();
 
-f_write_csv (f_get_epoc(),$lol_data[1],$lol_data[0]);
+f_write_csv ($epoch_time,$lol_data[1],$lol_data[0]);
 
-
+f_write_db ($epoch_time,$lol_data[1],$lol_data[0]);
