@@ -53,8 +53,11 @@ sub f_write_db {
 	#write dataset to db    
 	my $rv = $dbh->do("INSERT INTO wetterdaten (epoch,time,temp,humid) VALUES ('$curr_epoch','$curr_time','$curr_temp','$curr_humid');");
 	$dbh->disconnect;
+}
 
-
+sub f_get_binary {
+	my $binary = sprintf '%05b',$_[0]; 
+	return $binary;
 }
 
 #initialize wiringpi and my pins
@@ -66,27 +69,21 @@ foreach my $pin (@led_pin) {
 
 #get data from dht22
 my $below_zero = 0;
-my $lol_temp = undef;
+my $bin_temp = undef;
 
 my @lol_data = f_get_loldht_data();
 #my @lol_data = qw(74 5);
 
-#set Frost-indikator
+#set Frost-indikator and maximum temp = 31 degree (2^5)
 if ( int($lol_data[1]) < 0 ) {
 	$below_zero = 1;
-	$lol_temp = abs(int($lol_data[1]));
+	$bin_temp = f_get_binary(abs(int($lol_data[1]))); 
+}elsif ( int($lol_data[1] >= 31 ) {
+	my $bin_temp = "11111";	
 }else {
-	$lol_temp = abs(int($lol_data[1]));
+	$bin_temp = f_get_binary(abs(int($lol_data[1]))); 
 }
 
-#convert temperatur in binary
-my $bin_temp = sprintf '%05b', $lol_temp;
-
-#re-check if data is good nothing happens this time
-if ( length $bin_temp > 5 ) {
-	say length $bin_temp;
-	say "temp is higher then 32 degree - therm can't schow this high temperature";
-}
 
 #format data for further use
 my @temp_list = split //, $bin_temp;
