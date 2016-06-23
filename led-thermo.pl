@@ -78,8 +78,8 @@ my @lol_data = f_get_loldht_data();
 if ( int($lol_data[1]) < 0 ) {
 	$below_zero = 1;
 	$bin_temp = f_get_binary(abs(int($lol_data[1]))); 
-}elsif ( int($lol_data[1] >= 31 ) {
-	my $bin_temp = "11111";	
+}elsif ( int($lol_data[1] >= 31 )) {
+	$bin_temp = 11111;	
 }else {
 	$bin_temp = f_get_binary(abs(int($lol_data[1]))); 
 }
