@@ -27,7 +27,7 @@ how to use:
 
 		CONNECTION		PIN		WiPi	GPIO
 		DHT-3.3 V		17
-		DHT-DATA		11		0		17
+		DHT-DATA		11		0	17
 		DHT-ground		20
 
 5.	Connect the LED, 5 for binary representation of the temperature in °Celsius and
@@ -41,8 +41,8 @@ how to use:
 		8		16	4	23	16
 		16		18	5	24	18
 
-		-°Celsius	19	12	10		19	
-		-°Celsius	21	13	9		21
+		-°Celsius	19	12	10	19	
+		-°Celsius	21	13	9	21
 
 6.	Run `led-thermo.pl`. The values are written in the postgres-db `wetterdb` 
 	and the Thermometer	will show the actual temperature in binary representation.
