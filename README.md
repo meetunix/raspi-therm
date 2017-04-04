@@ -34,7 +34,7 @@ how to use:
 	2 LED for the indication of negative °Celsius
 
 
-		binary	PIN	WiPi	GPIO	BCM2135
+		binary		PIN	WiPi	GPIO	BCM2135
 		1		12	1	18	12
 		2		13	2	21	13
 		4		15	3	22	15
