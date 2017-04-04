@@ -34,15 +34,15 @@ how to use:
 	2 LED for the indication of negative °Celsius
 
 
-		binary		PIN		WiPi	GPIO	BCM2135
-		1			12		1		18		12
-		2			13		2		21		13
-		4			15		3		22		15
-		8			16		4		23		16
-		16			18		5		24		18
+		binary	PIN	WiPi	GPIO	BCM2135
+		1		12	1	18	12
+		2		13	2	21	13
+		4		15	3	22	15
+		8		16	4	23	16
+		16		18	5	24	18
 
-		-°Celsius	19		12		10		19	
-		-°Celsius	21		13		9		21
+		-°Celsius	19	12	10		19	
+		-°Celsius	21	13	9		21
 
 6.	Run `led-thermo.pl`. The values are written in the postgres-db `wetterdb` 
 	and the Thermometer	will show the actual temperature in binary representation.
