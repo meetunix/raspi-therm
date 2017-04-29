@@ -18,4 +18,11 @@
 *.aux
 *.backup
 
+#pictures
+*.jpg
+*.JPG
+*.JPEG
+*.jpeg
+
+
 
