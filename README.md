@@ -5,10 +5,15 @@ and two LED for +/-.
 
 prerequesites:
 
-1. working [piggpio-daemon](http://abyz.me.uk/rpi/pigpio/index.html)
+1. working [pigpio-daemon](http://abyz.me.uk/rpi/pigpio/index.html)
 
     sudo apt-get update
     sudo apt-get install pigpio python-pigpio python3-pigpio
+
+    systemctl start pigpiod.service
+    systemctl enable pigpiod.service
+
+Without any configuration, pigpio is listen only on localhost at port 8888 (tcp).
 
 
 how to use:

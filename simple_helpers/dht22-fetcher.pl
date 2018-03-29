@@ -3,8 +3,6 @@
 use strict;
 use warnings;
 use v5.10;
-
-
 use RPi::PIGPIO;
 use RPi::PIGPIO::Device::DHT22;
 

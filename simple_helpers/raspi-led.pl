@@ -2,43 +2,51 @@
 
 #use strict;
 use warnings;
-use HiPi::Wiring;
+use HiPi::GPIO;
+use Time::HiRes;
+use HiPi qw( :rpi ); # constants like RPI_MODE_OUTPUT
 use v5.10;
 
-say "$0 works only with root privileges";
-
 #initialize wiringpi and my pins
-&HiPi::Wiring::wiringPiSetup();
-my @led_pin = ( 1..5,12,13 );
+my $gpio = HiPi::GPIO->new;
+
+my @led_pin = ( RPI_PIN_12,
+                RPI_PIN_13,
+                RPI_PIN_15,
+                RPI_PIN_16,
+                RPI_PIN_18,
+                RPI_PIN_19,
+                RPI_PIN_21);
 #get arguments for further use
 if ( @ARGV < 1 ) {
-	die "\nEs wird eines der folgenden Argumente benötigt: on, off\n";
+    die "\nEs wird eines der folgenden Argumente benötigt: on, off, blink\n";
 }
 my $arg = shift @ARGV; 
 foreach my $pin (@led_pin) {
-	&HiPi::Wiring::pinMode ($pin, 1);
+    $gpio->set_pin_mode($pin, RPI_MODE_OUTPUT);
 }
 
-
-#main
 if ( $arg  eq "on") {
-	foreach my $pin (@led_pin) {
-		&HiPi::Wiring::digitalWrite($pin, 1);
-	}
+    say "LEDs are going up ...";
+    foreach my $pin (@led_pin) {
+        $gpio->set_pin_level($pin, 1);
+    }
 }elsif ( $arg eq "off") {
-	foreach my $pin (@led_pin) {
-		&HiPi::Wiring::digitalWrite($pin, 0);
-	}
+    say "LEDs are going down ...";
+    foreach my $pin (@led_pin) {
+        $gpio->set_pin_level($pin, 0);
+    }
 }elsif ( $arg eq "blink" ) {
-	while (1) {
-		foreach my $pin (@led_pin) {
-			&HiPi::Wiring::digitalWrite($pin, 1);
-		}
-		&HiPi::Wiring::delay(500);
-		foreach my $pin (@led_pin) {
-			&HiPi::Wiring::digitalWrite($pin, 0); 
-        	}	
-		&HiPi::Wiring::delay(500);
-	}
+    while (1) {
+    say "LEDs are going blink forever (use CTRL-C to stop)";
+        foreach my $pin (@led_pin) {
+            $gpio->set_pin_level($pin, 1);
+        }
+        Time::HiRes::usleep(300_000);
+        foreach my $pin (@led_pin) {
+            $gpio->set_pin_level($pin, 0); 
+        }	
+        Time::HiRes::usleep(300_000);
+    }
 }
 
