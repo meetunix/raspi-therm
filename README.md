@@ -5,8 +5,10 @@ and two LED for +/-.
 
 prerequesites:
 
-1. working [lol\_dht22](https://github.com/technion/lol_dht22)
-2. working [WiringPi](https://github.com/WiringPi/WiringPi)
+1. working [piggpio-daemon](http://abyz.me.uk/rpi/pigpio/index.html)
+
+    sudo apt-get update
+    sudo apt-get install pigpio python-pigpio python3-pigpio
 
 
 how to use:
@@ -44,7 +46,11 @@ how to use:
 		-°Celsius	19	12	10	19	
 		-°Celsius	21	13	9	21
 
-6.	Run `led-thermo.pl`. The values are written in the postgres-db `wetterdb` 
+6.	Run `raspi-therm.pl`. The values are written in the postgres-db `wetterdb` 
 	and the Thermometer	will show the actual temperature in binary representation.
+
+7. Configure the cron-daemon:
+
+    0-55/5  *       *       *       *       /opt/raspi-therm/raspi-therm.pl
 
 
