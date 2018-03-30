@@ -1,24 +1,24 @@
 # raspi-therm
 
 A very simple binary thermometer for the RaspberryPI. Consists of 5 LED for temperature
-and two LED for +/-.
+and two LED for +/-. 
 
 prerequesites:
 
 1. working [pigpio-daemon](http://abyz.me.uk/rpi/pigpio/index.html)
 
-    sudo apt-get update
-    sudo apt-get install pigpio python-pigpio python3-pigpio
+        sudo apt-get update
+        sudo apt-get install pigpio python-pigpio python3-pigpio
 
-    systemctl start pigpiod.service
-    systemctl enable pigpiod.service
+        systemctl start pigpiod.service
+        systemctl enable pigpiod.service
 
 Without any configuration, pigpio is listen only on localhost at port 8888 (tcp).
 
 
 how to use:
 
-1.	Set up the database credentials in `wetterdb-setup.pl` and `led-thermo.pl`
+1.	Set up the database credentials in `wetterdb-setup.pl` and `raspi-therm.pl`
 
 
 		###################                                                                          
@@ -28,8 +28,10 @@ how to use:
 		my $dbpassword          = "password";                                                        
 		###################                              
 
-2.	Set up postgresql dbms
+2.	Set up postgresql dbms 
+
 3.	Create database with `wetterdb-setup.pl`
+
 4.	Connect the DHT22 (or DHT11)
 
 		CONNECTION		PIN		WiPi	GPIO
@@ -56,6 +58,6 @@ how to use:
 
 7. Configure the cron-daemon:
 
-    0-55/5  *       *       *       *       /opt/raspi-therm/raspi-therm.pl
+        0-55/5  *       *       *       *       /opt/raspi-therm/raspi-therm.pl
 
 

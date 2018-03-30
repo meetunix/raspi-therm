@@ -9,11 +9,11 @@ use DBD::Pg;
 my $dbname 		= "wetterdb";
 my $dbuser 		= "wetter";
 my $dbhost 		= "192.168.42.72";
-my $dbpassword		= "password";
+my $dbpassword	= "password";
 ###################
 
 
-say "Hello";
+say "generating database scheme ...";
 
 
 my $dbh = DBI->connect("dbi:Pg:dbname=$dbname;
@@ -29,3 +29,5 @@ my $stmt = qq(CREATE TABLE wetterdaten (
 my $rv = $dbh->do($stmt);
 
 $dbh->disconnect;
+
+say "successful";

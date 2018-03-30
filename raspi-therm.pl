@@ -8,11 +8,20 @@ use HiPi::GPIO;
 use RPi::PIGPIO;
 use RPi::PIGPIO::Device::DHT22;
 use v5.10;
+use DBD::Pg;
+
+###################
+my $dbname              = "wetterdb";
+my $dbuser              = "wetter";
+my $dbhost              = "192.168.42.72";
+my $dbpassword          = "password";
+###################
+
 
 my $gpio = HiPi::GPIO->new;
 #write fetched data to csv file
 ##make sure you have writing permissions to:
-my $csv_file = "/var/temp-ng-data.csv";
+my $csv_file = "/var/raspi-therm-data.csv";
 sub f_write_csv {
     open CSV, '>>:encoding(UTF-8)', $csv_file or die "can't open file: $csv_file";  
     say CSV "$_[0];$_[1];$_[2]"; 
@@ -55,6 +64,32 @@ sub f_get_local_data {
 #        die 'lol_dht does not provide usefull data';
 #    }
 #}
+
+sub f_write_db {
+	#db-connect
+	my $dbh = DBI->connect("dbi:Pg:dbname=$dbname;host=$dbhost",
+        "$dbuser",
+        "$dbpassword",
+        {AutoCommit => 1}) or die $DBI::errstr;
+
+	my $curr_epoch = $_[0];
+    my $curr_temp = $_[1];
+    my $curr_humid = $_[2];
+	my @hr_time =  gmtime($curr_epoch); #all times in UTC
+    my $curr_time = sprintf("%04d-%02d-%02d %02d:%02d:%02d\n",
+        $hr_time[5] + 1900,
+        $hr_time[4]+1,
+        $hr_time[3],
+        $hr_time[2],
+        $hr_time[1],
+        $hr_time[0]);
+
+	#write dataset to db    
+	my $rv = $dbh->do("INSERT INTO wetterdaten (epoch,time,temp,humid)
+        VALUES ('$curr_epoch','$curr_time','$curr_temp','$curr_humid');");
+
+	$dbh->disconnect;
+}
 
 #convert to binary number
 sub f_get_binary {
@@ -129,4 +164,5 @@ if ( $act_temp{'2_16'} != 0 ) {
 }
 
 f_write_csv (f_get_epoc(),$local_data[1],$local_data[0]);
+f_write_db (f_get_epoc(),$local_data[1],$local_data[0]);
 
