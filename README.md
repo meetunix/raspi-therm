@@ -3,7 +3,7 @@
 A very simple binary thermometer for the RaspberryPI. Consists of 5 LED for temperature
 and two LED for +/-. 
 
-*prerequesites:*
+**prerequesites:**
 
 1. working [pigpio-daemon](http://abyz.me.uk/rpi/pigpio/index.html)
 
@@ -23,7 +23,7 @@ simple install with cpanminus
 
         # cpanm RPi::PIGPIO::Device::DHT22
 
-*how to use:*
+**how to use:**
 
 1.	Set up the database credentials in `wetterdb-setup.pl` and `raspi-therm.pl`
 
