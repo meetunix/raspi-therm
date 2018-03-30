@@ -3,20 +3,27 @@
 A very simple binary thermometer for the RaspberryPI. Consists of 5 LED for temperature
 and two LED for +/-. 
 
-prerequesites:
+*prerequesites:*
 
 1. working [pigpio-daemon](http://abyz.me.uk/rpi/pigpio/index.html)
 
-        sudo apt-get update
-        sudo apt-get install pigpio python-pigpio python3-pigpio
+        # sudo apt-get update
+        # sudo apt-get install pigpio python-pigpio python3-pigpio
 
-        systemctl start pigpiod.service
-        systemctl enable pigpiod.service
+        # systemctl start pigpiod.service
+        # systemctl enable pigpiod.service
 
 Without any configuration, pigpio is listen only on localhost at port 8888 (tcp).
 
+2. [HiPi Perl module](http://hipi.znix.com/install.html) 
+        
+3. [RPi::PIGPIO::Device::DHT22 Perl Module](https://metacpan.org/pod/RPi::PIGPIO::Device::DHT22)
 
-how to use:
+simple install with cpanminus
+
+        # cpanm RPi::PIGPIO::Device::DHT22
+
+*how to use:*
 
 1.	Set up the database credentials in `wetterdb-setup.pl` and `raspi-therm.pl`
 
