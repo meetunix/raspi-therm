@@ -52,7 +52,7 @@ $dht22 = RPi::PIGPIO::Device::DHT22->new($pi,17);
 $dht22->trigger();
 
 $act_humid = $dht22->humidity;
-my $perf_text = "Humidity: $act_humid°C\n";
+my $perf_text = "Humidity: $act_humid %\n";
 
 if (($act_humid le $arg_w_low_humid) or ($act_humid ge $arg_w_high_humid)) {
     print "WARNING - " . $perf_text;

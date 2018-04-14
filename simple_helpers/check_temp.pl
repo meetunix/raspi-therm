@@ -52,7 +52,7 @@ $dht22 = RPi::PIGPIO::Device::DHT22->new($pi,17);
 $dht22->trigger();
 
 $act_temp = $dht22->temperature;
-my $perf_text = "Temperature: $act_temp°C\n";
+my $perf_text = "Temperature: $act_temp °C\n";
 
 if (($act_temp le $arg_w_low_temp) or ($act_temp ge $arg_w_high_temp)) {
     print "WARNING - " . $perf_text;
