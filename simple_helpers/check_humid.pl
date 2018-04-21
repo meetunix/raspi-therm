@@ -17,10 +17,10 @@ my $arg_w_high_humid = 60;
 my $arg_c_high_humid = 65;
 
 GetOptions(	'help'			                => \$arg_help,
-			'warning-low-humid=s'			=> \$arg_w_low_humid,
-			'critical-low-humid=s'			=> \$arg_c_low_humid,
-			'warning-high-humid|W=s' 		=> \$arg_w_high_humid,
-			'critical--high-humid|C=s'	    => \$arg_c_high_humid );
+			'critical-low-humid|a=s'		=> \$arg_c_low_humid,
+			'warning-low-humid|b=s'			=> \$arg_w_low_humid,
+			'warning-high-humid|x=s' 		=> \$arg_w_high_humid,
+			'critical--high-humid|y=s'	    => \$arg_c_high_humid );
 
 sub f_show_help {
 print <<"EOF";
@@ -31,14 +31,18 @@ Check Humidity!
 
 Icinga/Nagios-Plugin for raspi-humid.
 
--w | --warning-low-humid
--c | --critical-low-humid
--W | --warning-high-humid
--C | --critical-high-humid
+-a | --critical-low-humid
+-b | --warning-low-humid
+-x | --warning-high-humid
+-y | --critical-high-humid
 -h | --help
 
 Use long options in icinga service description!
-	
+
+           (a)          (b)      (x)           (y)
+--low-crit--|--low-warn--|--norm--|--high-warn--|--high-crit
+
+
 EOF
 }
 
@@ -54,13 +58,23 @@ $dht22->trigger();
 $act_humid = $dht22->humidity;
 my $perf_text = "Humidity: $act_humid %\n";
 
-if (($act_humid le $arg_w_low_humid) or ($act_humid ge $arg_w_high_humid)) {
+$act_humid = 53;
+
+if (($act_humid < $arg_w_low_humid) && ($act_humid > $arg_c_low_humid )) {
     print "WARNING - " . $perf_text;
     exit 1;
-} elsif (($act_humid le $arg_c_low_humid) or ($act_humid ge $arg_c_high_humid)) {
+} elsif (($act_humid < $arg_w_low_humid) && ($act_humid < $arg_c_low_humid )) {
+    print "CRITICAL - " . $perf_text;
+    exit 2;
+} elsif (($act_humid > $arg_w_high_humid) && ($act_humid < $arg_c_high_humid )) {
+    print "WARNING - " . $perf_text;
+    exit 1;
+} elsif (($act_humid > $arg_w_high_humid) && ($act_humid > $arg_c_high_humid )) {
     print "CRITICAL - " . $perf_text;
     exit 2;
 } else {
     print "OK - " . $perf_text;
     exit 0;
 }
+
+
