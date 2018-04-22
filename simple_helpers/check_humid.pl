@@ -58,8 +58,6 @@ $dht22->trigger();
 $act_humid = $dht22->humidity;
 my $perf_text = "Humidity: $act_humid %\n";
 
-$act_humid = 53;
-
 if (($act_humid < $arg_w_low_humid) && ($act_humid > $arg_c_low_humid )) {
     print "WARNING - " . $perf_text;
     exit 1;
